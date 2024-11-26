@@ -1,0 +1,74 @@
+name: eclipse
+base: core24
+
+version: 2024-09
+summary: Extensible Tool Platform and Java IDE
+website: https://eclipse.org/ide
+description:
+  Eclipse provides IDEs and platforms for nearly every language and architecture.
+  We are famous for our Java IDE, C/C++, JavaScript and PHP IDEs built on extensible
+  platforms for creating desktop, Web and cloud IDEs. These platforms deliver the most
+  extensive collection of add-on tools available for software developers.
+
+grade: stable
+confinement: classic
+
+platforms:
+  amd64:
+  arm64:
+    build-on: [amd64, arm64]
+    build-for: [arm64]
+
+apps:
+  eclipse:
+    command: bin/eclipse-wrapper
+
+parts:
+  eclipse:
+    plugin: dump
+    source:
+      - on amd64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-x86_64.tar.gz
+      - on arm64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-aarch64.tar.gz
+    organize:
+      'configuration': 'usr/lib/eclipse/configuration'
+      'dropins': 'usr/lib/eclipse/dropins'
+      'features': 'usr/lib/eclipse/features'
+      'p2': 'usr/lib/eclipse/p2'
+      'plugins': 'usr/lib/eclipse/plugins'
+      'readme': 'usr/lib/eclipse/readme'
+      '.eclipseproduct': 'usr/lib/eclipse/.eclipseproduct'
+      'artifacts.xml': 'usr/lib/eclipse/artifacts.xml'
+      'eclipse': 'usr/lib/eclipse/eclipse'
+      'eclipse.ini': 'usr/lib/eclipse/eclipse.ini'
+      'icon.xpm': 'usr/lib/eclipse/icon.xpm'
+    build-attributes:
+      - no-patchelf
+    stage-packages:
+      - libffi8
+      - libfreetype6
+      - libpng16-16t64
+      - libgdk-pixbuf2.0-0
+      - libsecret-1-0
+      - libasound2
+      - libxi6
+      - libxrender1
+      - libxtst6
+    override-prime: |
+      craftctl default
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/aix*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/darwin*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/freebsd*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/openbsd*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/sunos*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/win32*/
+  wrappers:
+    plugin: dump
+    source: snap/local/wrappers
+    organize:
+      eclipse: bin/eclipse-wrapper
+
+lint:
+  ignore:
+  - classic
+  - library:
+    - usr/lib/**/*.so*
