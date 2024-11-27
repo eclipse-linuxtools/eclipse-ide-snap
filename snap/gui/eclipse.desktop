@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=Eclipse
-Icon=${SNAP}/icon.xpm
+Icon=${SNAP}/usr/lib/eclipse/icon.xpm
 Exec=eclipse %f
 Comment=Eclipse IDE
 Categories=Development;IDE;
