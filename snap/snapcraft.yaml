@@ -55,6 +55,9 @@ parts:
       - libxtst6
     override-prime: |
       craftctl default
+      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type d -exec chmod 755 {} \;
+      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type f -exec chmod 644 {} \;
+      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type f -exec chmod +x {} \;
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/aix*/
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/darwin*/
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/freebsd*/
