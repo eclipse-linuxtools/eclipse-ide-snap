@@ -12,4 +12,4 @@
     snapcraft
 
 ### Test
-    sudo snap install eclipse_*_amd64.snap --classic --dangerous
+    sudo snap install eclipse*.snap --classic --dangerous
