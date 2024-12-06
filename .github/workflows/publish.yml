@@ -9,22 +9,23 @@ permissions:
   contents: read
 
 jobs:
-  snapcraft:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [amd64, arm64]
+        platform:
+          - amd64
+          - arm64
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: snapcore/action-build@v1
-        id: build
-        with:
-          snapcraft-args: --build-for=${{ matrix.arch }}
-
-      - uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-        with:
-          snap: ${{ steps.build.outputs.snap }}
-          release: stable
+    - uses: actions/checkout@v4
+    - uses: docker/setup-qemu-action@v3
+    - uses: diddlesnaps/snapcraft-multiarch-action@v1
+      id: snapcraft
+      with:
+        architecture: ${{ matrix.platform }}
+    - uses: snapcore/action-publish@v1
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
+      with:
+        snap: ${{ steps.snapcraft.outputs.snap }}
+        release: stable
