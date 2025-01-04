@@ -1,0 +1,11 @@
+# all sources should have &r=1 amended
+latest: 2024-12R
+2024-12R:
+  eclipse-java:
+    amd64:
+      source: https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2024-12/R/eclipse-java-2024-12-R-linux-gtk-x86_64.tar.gz&r=1
+      checksum: "sha512/dae3fdace259f237afaadad98ac3c16bf571eb7e2704200e5159de9a6bde594c4112e983dd0eac3c35c0fd5325f1cf9d798e2fd511a5059fc02ceca71391927c"
+  eclipse-pde:
+    amd64:
+      source: https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2024-12/R/eclipse-committers-2024-12-R-linux-gtk-x86_64.tar.gz&r=1
+      checksum: "sha512/133dfeb699fe604c24d96ec521dfb201196505eaceaefd62f1d00e5d87953ee224839f113a1603c4c8dfec433155827c2d175a5ad838e6d32a7dd477a728c620"
