@@ -1,7 +1,12 @@
-name: eclipse
+ename: !- $env[ECLIPSE_PACKAGE]
+earch: !- $env[ECLIPSE_ARCH]
+epackages: !- $import('eclipse-packages.yaml')
+
+name: !? .ename
 base: core22
 
-version: 2024-12
+version: !? .epackages.latest
+
 summary: Extensible Tool Platform and Java IDE
 website: https://eclipse.org/ide
 description:
@@ -18,15 +23,15 @@ architectures:
 - build-on: arm64
 
 apps:
-  eclipse:
+  !? .ename:
     command: bin/eclipse-wrapper
 
 parts:
   eclipse:
     plugin: dump
-    source:
-      - on amd64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-x86_64.tar.gz
-      - on arm64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-aarch64.tar.gz
+    source-type: tar
+    source: !? $_.epackages[$_.version][$_.name][$_.earch].source
+    source-checksum: !? $_.epackages[$_.version][$_.name][$_.earch].checksum
     organize:
       'configuration': 'usr/lib/eclipse/configuration'
       'dropins': 'usr/lib/eclipse/dropins'
@@ -70,6 +75,6 @@ parts:
 
 lint:
   ignore:
-  - classic
+  - classic # open sandbox paradoxon
   - library:
     - usr/lib/**/*.so*

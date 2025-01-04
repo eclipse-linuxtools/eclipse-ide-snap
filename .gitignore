@@ -1,1 +1,11 @@
+# snapcraft specifics
+parts
+stage
+prime
 *.snap
+.snapcraft
+__pycache__
+*.pyc
+
+# generated
+snap/snapcraft.yaml
