@@ -1,7 +1,11 @@
-name: eclipse
+ename: !- $env[ECLIPSE_PACKAGE]
+epackages: !- $import('eclipse-packages.yaml')
+
+name: !? .ename
 base: core22
 
-version: 2024-12
+version: !? .epackages.latest
+
 summary: Extensible Tool Platform and Java IDE
 website: https://eclipse.org/ide
 description:
@@ -13,20 +17,22 @@ description:
 grade: stable
 confinement: classic
 
-architectures:
+architectures: # TODO use for loop here
 - build-on: amd64
 - build-on: arm64
 
 apps:
-  eclipse:
+  !? .ename:
     command: bin/eclipse-wrapper
 
 parts:
   eclipse:
     plugin: dump
-    source:
-      - on amd64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-x86_64.tar.gz
-      - on arm64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-aarch64.tar.gz
+    source-type: tar
+    source: # TODO use for loop here
+      - on amd64: !? .epackages[$_.version][$_.name].amd64.source
+      - on arm64: !? .epackages[$_.version][$_.name].arm64.source
+    # TODO use source-checksum once supported in multiarch setting
     organize:
       'configuration': 'usr/lib/eclipse/configuration'
       'dropins': 'usr/lib/eclipse/dropins'
@@ -67,9 +73,12 @@ parts:
     source: snap/local/wrappers
     organize:
       eclipse: bin/eclipse-wrapper
+  eclipse_desktop:
+    plugin: dump
+    source: snap/gui
 
 lint:
   ignore:
-  - classic
+  - classic # confinement paradoxon
   - library:
     - usr/lib/**/*.so*

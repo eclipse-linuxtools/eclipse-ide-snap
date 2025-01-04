@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Name=Eclipse
-Icon=${SNAP}/usr/lib/eclipse/icon.xpm
-Exec=eclipse %f
+Icon=/usr/lib/eclipse/icon.xpm
+Exec=bin/eclipse-wrapper %f
 Comment=Eclipse IDE
 Categories=Development;IDE;
 Terminal=false

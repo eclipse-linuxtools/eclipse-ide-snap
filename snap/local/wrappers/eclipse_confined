@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# will update eclipse.home.location and eclipse.p2.data.area towards $SNAP_USER_DATA
+## will update on every execution to go along latest revision x1, x2, ...
+ECLIPSE_INI=$SNAP_USER_DATA/eclipse.ini
+
+cp $SNAP/usr/lib/eclipse/eclipse.ini $ECLIPSE_INI
+chmod 666 $ECLIPSE_INI
+
+mkdir -p $SNAP_USER_DATA/eclipse_home
+echo -Declipse.home.location=file:$SNAP_USER_DATA/eclipse_home | tee -a $ECLIPSE_INI
+mkdir -p $SNAP_USER_DATA/p2_data
+echo -Declipse.p2.data.area=te$SNAP_USER_DATA/p2_data | tee -a $ECLIPSE_INI
+
+EXTRA_ARGS+=("--launcher.ini" "$ECLIPSE_INI")
+
+# get .gitconfig mapped
+ln -sf $SNAP_REAL_HOME/.gitconfig ~/.gitconfig
+ln -sf $SNAP_REAL_HOME/.ssh ~/.ssh
+
+
+# see snap plug personal-workspace
+ECLIPSE_WORKSPACE=/home/$USER/eclipse-workspace
+echo Using workspace at $ECLIPSE_WORKSPACE.
+
+exec "$SNAP/eclipse" -configuration "${SNAP_USER_DATA}/${SNAP_ARCH}/configuration" -data "$ECLIPSE_WORKSPACE" "${EXTRA_ARGS[@]}" "$@"

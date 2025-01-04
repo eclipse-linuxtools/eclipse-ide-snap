@@ -18,6 +18,9 @@ jobs:
           - arm64
     steps:
     - uses: actions/checkout@v4
+    - run: ./set-eclipse-package.sh
+      env:
+        ECLIPSE_PACKAGE: eclipse-java
     - uses: docker/setup-qemu-action@v3
     - uses: diddlesnaps/snapcraft-multiarch-action@v1
       id: snapcraft

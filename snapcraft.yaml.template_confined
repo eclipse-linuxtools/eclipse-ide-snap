@@ -1,0 +1,130 @@
+ename: !- $env[ECLIPSE_PACKAGE]
+name: !? .ename
+base: core24
+
+epackages: !- $import('eclipse-packages.yaml')
+version: !? .epackages.latest
+
+summary: Extensible Tool Platform and Java IDE
+description:
+  Eclipse provides IDEs and platforms for nearly every language and architecture.
+  We are famous for our Java IDE, C/C++, JavaScript and PHP IDEs built on extensible
+  platforms for creating desktop, Web and cloud IDEs. These platforms deliver the most
+  extensive collection of add-on tools available for software developers.
+
+grade: stable
+confinement: strict
+
+compression: lzo
+
+platforms:
+  amd64:
+    build-on: amd64
+
+apps:
+  !? .ename:
+    command: bin/eclipse-wrapper
+    extensions: [gnome]
+    desktop: eclipse.desktop
+    environment:
+      ## https://docs.gtk.org/glib/running.html#environment-variables
+      G_MESSAGES_DEBUG: all
+      ## https://docs.mesa3d.org/envvars.html
+      LIBGL_DEBUG: 1
+      DRI_PRIME_DEBUG: 1
+      MESA_DEBUG: 1
+      MESA_VK_DEVICE_SELECT_DEBUG: 1
+      # AMD_DEBUG: all
+      ## https://trac.webkit.org/wiki/EnvironmentVariables
+      WEBKIT_DEBUG: all
+    plugs:
+      - personal-sourcedir
+      - personal-workspace
+      - personal-gitconfig
+      - personal-sshid
+      - personal-maven-cache
+      - network
+      - network-bind
+
+plugs:
+  personal-sourcedir:
+    interface: personal-files
+    write:
+    - $HOME/projs
+  personal-workspace:
+    interface: personal-files
+    write:
+    - $HOME/eclipse-workspace
+  personal-gitconfig:
+    interface: personal-files
+    write:
+    - $HOME/.gitconfig
+  personal-sshid:
+    interface: ssh-keys
+  personal-maven-cache:
+    interface: personal-files
+    write:
+    - $HOME/.m2
+
+parts:
+  eclipse:
+    plugin: dump
+    source-type: tar
+    source: 
+      # TODO use for loop here
+      # TODO use source-checksum once supported in multiarch setting
+      - on amd64: !? .epackages[$_.version][$_.name].amd64.source
+      - on arm64: !? .epackages[$_.version][$_.name].arm64.source
+    build-attributes:
+      - no-patchelf
+    organize:
+      'configuration': 'usr/lib/eclipse/configuration'
+      'dropins': 'usr/lib/eclipse/dropins'
+      'features': 'usr/lib/eclipse/features'
+      'p2': 'usr/lib/eclipse/p2'
+      'plugins': 'usr/lib/eclipse/plugins'
+      'readme': 'usr/lib/eclipse/readme'
+      '.eclipseproduct': 'usr/lib/eclipse/.eclipseproduct'
+      'artifacts.xml': 'usr/lib/eclipse/artifacts.xml'
+      'eclipse': 'usr/lib/eclipse/eclipse'
+      'eclipse.ini': 'usr/lib/eclipse/eclipse.ini'
+      'icon.xpm': 'usr/lib/eclipse/icon.xpm'
+    override-prime: |
+      craftctl default
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/aix*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/darwin*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/freebsd*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/openbsd*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/sunos*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/win32*/
+      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type d -exec chmod 555 {} \;
+      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type f -exec chmod 444 {} \;
+      chmod +x $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux*/jre/bin/java
+      chmod +x $SNAPCRAFT_PRIME/usr/lib/eclipse/eclipse
+  wrappers:
+    plugin: dump
+    source: snap/local/wrappers
+    organize:
+      eclipse_confined: bin/eclipse-wrapper
+  eclipse_desktop:
+    plugin: dump
+    source: snap/gui
+  eclipse_deps:
+    plugin: nil
+    stage-snaps:
+    - git-confined
+
+layout:
+  /usr/local/bin:
+    bind: $SNAP/usr/bin
+  /usr/libexec/git-core:
+    symlink: $SNAP/usr/libexec/git-core
+  /usr/share/git-core:
+    symlink: $SNAP/usr/share/git-core
+  /usr/lib/eclipse:
+    bind: $SNAP/usr/lib/eclipse
+
+lint:
+  ignore:
+  - library:
+    - usr/lib/**/*.so*
