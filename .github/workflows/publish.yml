@@ -10,22 +10,17 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform:
-          - amd64
-          - arm64
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: docker/setup-qemu-action@v3
-    - uses: diddlesnaps/snapcraft-multiarch-action@v1
-      id: snapcraft
-      with:
-        architecture: ${{ matrix.platform }}
+    - uses: snapcore/action-build@v1
+      id: build
     - uses: snapcore/action-publish@v1
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
       with:
-        snap: ${{ steps.snapcraft.outputs.snap }}
+        snap: ${{ steps.build.outputs.snap }}
         release: stable
