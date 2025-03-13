@@ -2,7 +2,7 @@
 
 ## Install [![eclipse](https://snapcraft.io/eclipse/badge.svg)](https://snapcraft.io/eclipse)
 
-    sudo snap install eclipse
+    sudo snap install eclipse --classic
 
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
