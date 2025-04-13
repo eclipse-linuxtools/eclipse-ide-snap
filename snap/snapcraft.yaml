@@ -46,6 +46,7 @@ parts:
       - libfreetype6
       - libpng16-16t64
       - libgdk-pixbuf2.0-0
+      - librsvg2-common
       - libsecret-1-0
       - libasound2
       - libxi6
