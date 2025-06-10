@@ -59,6 +59,7 @@ parts:
       find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type f -exec chmod +x {} \;
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/aix*/
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/darwin*/
+      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/dragonflybsd*/
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/freebsd*/
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/openbsd*/
       rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/sunos*/
