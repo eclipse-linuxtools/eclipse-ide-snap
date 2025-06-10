@@ -1,7 +1,7 @@
 name: eclipse
 base: core24
 
-version: 2025-03
+version: 2025-06
 summary: Extensible Tool Platform and Java IDE
 website: https://eclipse.org/ide
 description:
