@@ -5,10 +5,8 @@ version: 2025-09
 summary: Extensible Tool Platform and Java IDE
 website: https://eclipse.org/ide
 description:
-  Eclipse provides IDEs and platforms for nearly every language and architecture.
-  We are famous for our Java IDE, C/C++, JavaScript and PHP IDEs built on extensible
-  platforms for creating desktop, Web and cloud IDEs. These platforms deliver the most
-  extensive collection of add-on tools available for software developers.
+  The Eclipse Java IDE is extensible and also features environments for
+  C/C++, JavaScript and others that can be further extended by plug-ins.
 
 grade: stable
 confinement: classic
