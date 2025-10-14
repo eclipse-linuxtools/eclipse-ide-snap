@@ -9,7 +9,7 @@
 ## Development
 
 ### Build
-    snapcraft
+    snapcraft pack
 
 ### Test
     sudo snap install eclipse*.snap --classic --dangerous
