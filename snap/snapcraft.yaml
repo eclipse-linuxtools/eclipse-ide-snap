@@ -1,12 +1,24 @@
 name: eclipse
 base: core24
 
+title: Eclipse IDE
+license: EPL-2.0
 version: 2025-09
 summary: Extensible Tool Platform and Java IDE
-website: https://eclipse.org/ide
 description:
   The Eclipse Java IDE is extensible and also features environments for
   C/C++, JavaScript and others that can be further extended by plug-ins.
+contact:
+  - https://www.eclipse.org/org/foundation/contact.php
+donation:
+  - https://www.eclipse.org/sponsor/ide/
+issues:
+  - https://github.com/eclipse-linuxtools/eclipse-ide-snap/issues
+  - https://github.com/eclipse-platform/#reporting-issues
+source-code:
+  - https://github.com/eclipse-platform
+website:
+  - https://eclipseide.org/
 
 grade: stable
 confinement: classic
