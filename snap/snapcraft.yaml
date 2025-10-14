@@ -18,6 +18,8 @@ platforms:
 apps:
   eclipse:
     command: bin/eclipse-wrapper
+    plugs:
+    - network-status
 
 parts:
   eclipse:
