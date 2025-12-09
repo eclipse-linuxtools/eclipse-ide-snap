@@ -3,7 +3,7 @@ base: core24
 
 title: Eclipse IDE
 license: EPL-2.0
-version: 2025-09
+version: 2025-12
 summary: Extensible Tool Platform and Java IDE
 description:
   The Eclipse Java IDE is extensible and also features environments for
