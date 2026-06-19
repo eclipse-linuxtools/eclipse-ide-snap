@@ -1,5 +1,5 @@
 name: eclipse
-base: core24
+base: core26
 
 title: Eclipse IDE
 license: EPL-2.0
@@ -55,7 +55,7 @@ parts:
       - libffi8
       - libfreetype6
       - libpng16-16t64
-      - libgdk-pixbuf2.0-0
+      - libgdk-pixbuf-2.0-0
       - librsvg2-common
       - libsecret-1-0
       - libasound2
