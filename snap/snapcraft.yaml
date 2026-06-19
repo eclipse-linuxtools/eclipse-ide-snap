@@ -34,23 +34,17 @@ apps:
 parts:
   eclipse:
     plugin: dump
+    source-type: tar
     source:
       - on amd64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-x86_64.tar.gz
       - on arm64: https://download.eclipse.org/technology/epp/downloads/release/${SNAPCRAFT_PROJECT_VERSION}/R/eclipse-java-${SNAPCRAFT_PROJECT_VERSION}-R-linux-gtk-aarch64.tar.gz
-    organize:
-      'configuration': 'usr/lib/eclipse/configuration'
-      'dropins': 'usr/lib/eclipse/dropins'
-      'features': 'usr/lib/eclipse/features'
-      'p2': 'usr/lib/eclipse/p2'
-      'plugins': 'usr/lib/eclipse/plugins'
-      'readme': 'usr/lib/eclipse/readme'
-      '.eclipseproduct': 'usr/lib/eclipse/.eclipseproduct'
-      'artifacts.xml': 'usr/lib/eclipse/artifacts.xml'
-      'eclipse': 'usr/lib/eclipse/eclipse'
-      'eclipse.ini': 'usr/lib/eclipse/eclipse.ini'
-      'icon.xpm': 'usr/lib/eclipse/icon.xpm'
     build-attributes:
       - no-patchelf
+    override-build: |
+      cp -a "$CRAFT_PART_SRC"/. "$CRAFT_PART_INSTALL"
+      find $CRAFT_PART_INSTALL/ -type d -exec chmod 755 {} \;
+      find $CRAFT_PART_INSTALL/ -type f -exec chmod 644 {} \;
+      find $CRAFT_PART_INSTALL/ -type f -exec chmod +x {} \;
     stage-packages:
       - libffi8
       - libfreetype6
@@ -64,16 +58,13 @@ parts:
       - libxtst6
     override-prime: |
       craftctl default
-      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type d -exec chmod 755 {} \;
-      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type f -exec chmod 644 {} \;
-      find $SNAPCRAFT_PRIME/usr/lib/eclipse/ -type f -exec chmod +x {} \;
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/aix*/
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/darwin*/
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/dragonflybsd*/
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/freebsd*/
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/openbsd*/
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/sunos*/
-      rm -r $SNAPCRAFT_PRIME/usr/lib/eclipse/plugins/com.sun.jna_*v*/com/sun/jna/win32*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/aix*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/darwin*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/dragonflybsd*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/freebsd*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/openbsd*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/sunos*/
+      rm -r $SNAPCRAFT_PRIME/plugins/com.sun.jna_*v*/com/sun/jna/win32*/
   wrappers:
     plugin: dump
     source: snap/local/wrappers
