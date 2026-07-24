@@ -4,6 +4,7 @@ base: core26
 title: Eclipse IDE
 license: EPL-2.0
 version: 2026-06
+icon: snap/gui/eclipse.png
 summary: Extensible Tool Platform and Java IDE
 description:
   The Eclipse Java IDE is extensible and also features environments for
