@@ -7,4 +7,4 @@ Exec=eclipse %f
 Comment=Eclipse IDE
 Categories=Development;IDE;
 Terminal=false
-StartupWMClass=eclipse
+StartupWMClass=Eclipse
